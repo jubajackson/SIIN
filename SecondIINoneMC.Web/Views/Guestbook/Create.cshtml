@@ -1,0 +1,145 @@
+﻿@model SecondIINoneMC.Web.ViewModels.GuestbookViewModel
+@{
+    ViewBag.Title = "Create a New Guestbook Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    function saveGuestbookPost() {
+        if (validateGuestbookForm()) {
+            document.forms["frmCreateGuestbookPost"].submit();
+        }
+    }
+
+    function clearErrors() {
+        $("#CharterId").removeClass("error");
+        $("#Name").removeClass("error");
+        $("#Email").removeClass("error");
+        $("#Location").removeClass("error");
+        $("#Message").removeClass("error");
+
+        hideErrors();
+        hideMessages();
+    }
+
+    function validateGuestbookForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if (CharterId.selectedIndex == 0) {
+            addError("The Charter field is required.");
+            $("#CharterId").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Name').val().length <= 0) {
+            addError("The Name field is required.");
+            $("#Name").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Email').val().length > 0) {
+            if (!isEmailValid($('#Email').val())) {
+                addError("The email entered must be a valid email address.");
+                $("#Email").addClass("error");
+
+                valid = false;
+            }
+        }
+
+        if ($('#Location').val().length <= 0) {
+            addError("The Location field is required.");
+            $("#Location").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Message').val().length <= 0) {
+            addError("The Message field is required.");
+            $("#Message").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+    function back() {
+        window.location = '@Url.Action("Index")';
+    }
+</script>
+
+@using (Html.BeginForm("Create", "Guestbook", FormMethod.Post, new { id = "frmCreateGuestbookPost" }))
+{
+    <div class="formBox">
+        <ul class="nolist formGroup">
+            <li class="title">New Guestbook Post</li>
+            <li>
+                <label>
+                    Charter Id</label>
+                @Html.DropDownListFor(model => model.CharterId, (SelectList)ViewBag.Charters, "Select a Charter")
+            </li>
+            <li>
+                <label>
+                    Name</label>
+                @Html.EditorFor(model => model.Name)
+            </li>
+            <li>
+                <label>
+                    Email</label>
+                @Html.EditorFor(model => model.Email)
+            </li>
+            <li>
+                <label>
+                    Mobile Phone</label>
+                @Html.EditorFor(model => model.MobilePhone)
+            </li>
+            <li>
+                <label>
+                    Website</label>
+                @Html.EditorFor(model => model.Website)
+            </li>
+            <li>
+                <label>
+                    Location</label>
+                @Html.EditorFor(model => model.Location)
+            </li>
+            <li>
+                <label>
+                    Club (MC/SC)</label>
+                @Html.EditorFor(model => model.Club)
+            </li>
+            <li>
+                <label>
+                    Message</label>
+                @Html.TextAreaFor(model => model.Message)
+            </li>
+            <li>
+                <label>
+                    Please enter the following code </label>
+                <img src="/Content/img/captchas/@Model.CaptchaImage" />
+            </li>
+            <li>
+                @Html.HiddenFor(model => model.CaptchaId)
+                @Html.HiddenFor(model => model.CaptchaImage)
+                @Html.EditorFor(model => model.CaptchaEntered)
+            </li>
+        </ul>
+        <ul class="nolist" style="text-align: center;">
+            <li class="buttons">
+                <button type="button" onclick="JavaScript:back();">Back to Guestbook</button>
+               <button type="button" onclick="JavaScript:saveGuestbookPost();">Create</button>
+            </li>
+        </ul>
+    </div>
+}
+

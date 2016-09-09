@@ -1,0 +1,213 @@
+﻿@using System.Text;
+@using SecondIINoneMC.Helpers;
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="secondIInoneMasterHead" runat="server">
+    <link rel="icon" href="http://www.secondIInoneMC.com/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://www.secondIInoneMC.com/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>@ViewBag.Title - Second II None MC Web Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Juba Jackson" />
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/css/jquery-ui.css")
+    @Styles.Render("~/Content/css/jquery.ui.theme.css")
+    @Styles.Render("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css")
+    @Scripts.Render("~/Scripts/Common.js")
+    @Scripts.Render("~/Scripts/Messages.js")
+    @Scripts.Render("~/Scripts/jQueryPopup.js")
+    @Scripts.Render("~/Scripts/RegularExpressions.js")
+    @Scripts.Render("~/Scripts/Underscore.js")
+    @Styles.Render("~/Content/css/SecondIINoneMC.css")
+    @Styles.Render("~/Content/css/normalize.css")
+    @Styles.Render("~/Content/css/foundation.css")
+    @Styles.Render("~/Scripts/colorbox/colorbox.css")
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            var error = '@ViewBag.Error';
+            var message = '@ViewBag.Message';
+
+            if (!isNullOrUndefinedOrEmpty(error)) {
+                hideMessages();
+                addError(error);
+                showErrors();
+            }
+
+            if (!isNullOrUndefinedOrEmpty(message)) {
+                hideErrors();
+                addMessage(message);
+                showMessages();
+            }
+
+            if (isNullOrUndefinedOrEmpty(error) && isNullOrUndefinedOrEmpty(message)) {
+                hideErrors();
+                hideMessages();
+            }
+        });
+    </script>
+</head>
+<body>
+    <script language="javascript" type="text/javascript" src="scripts/dhtmlTooltip/wz_tooltip.js">
+    </script>
+    <script language="javascript" type="text/javascript" src="scripts/dhtmlTooltip/tip_centerwindow.js">
+    </script>
+    <script language="javascript" type="text/javascript" src="scripts/dhtmlTooltip/tip_followscroll.js">
+    </script>
+    <div class="top-bar">
+        <ul class="title-area">
+            <!-- Title Area -->
+            <!-- 
+            <li class="name">
+                <h1>
+                    <a href="/Home">Second II None MC</a>
+                </h1>
+            </li>
+            -->
+            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+        @{
+            if (Request.IsAuthenticated && Session["UserId"] != null)
+            {
+                <section class="top-bar-section" style="max-width: 980px; margin: 0 auto;">
+                    <ul>
+                        <li class="active"><a href="/Home">Home</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Account/Index">My Profile</a></li>
+                        <li class="divider"></li>
+
+                        <li class="active has-dropdown"><a href="/Events">Events</a></li>
+                        <li class="divider"></li>
+                    
+                        @if (Roles.IsUserInRole("Administrator"))
+                        { 
+                            <li class="active"><a href="/Admin">User Administration</a></li>
+                            <li class="divider"></li>
+                        }
+                        
+                        <li class="active"><a href="/PhotoGallery">Photo Gallery</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/VideoGallery">Video Gallery</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Guestbook">Guestbook</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Home/ContactUs">Contact Us</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Home/Links">Links</a></li>
+                    </ul>
+                </section>
+            }
+            else
+            {
+                <section class="top-bar-section" style="max-width: 700px; margin: 0 auto;">
+                    <ul>
+                        <li class="active"><a href="/Home">Home</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Events">Events</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/PhotoGallery">Photo Gallery</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/VideoGallery">Video Gallery</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Guestbook">Guestbook</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Home/ContactUs">Contact Us</a></li>
+                        <li class="divider"></li>
+                        <li class="active"><a href="/Home/Links">Links</a></li>
+                    </ul>
+                </section>
+            }
+        }
+    </div>
+    </div> </div>
+    <div id="divError" class="error" style="display: none;">
+        <h2>
+            <img src="~/Content/img/icons/error.png" alt="error" />Problem Found
+        </h2>
+        <ul>
+        </ul>
+    </div>
+    <div id="divMessage" class="message" style="display: none;">
+        <h2>
+            <img src="~/Content/img/icons/info.png" alt="information" />Information
+        </h2>
+        <ul>
+        </ul>
+    </div>
+    <div id="loading-div-background">
+        <div id="loading-div" class="ui-corner-all">
+            <img src="~/Content/img/loading.gif" style="margin: 10px;" alt="Loading.." />
+            <h2 style="color: gray; font-weight: normal;">
+                <label id="lblWaitMessage">
+                    Please Wait...</label></h2>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <img src="~/Content/img/SecondIINoneMCHeader.jpg" alt="Second II None MC Header Image" />
+    </div>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            <div style="margin-top: 5px;">
+                @RenderBody()
+            </div>
+        </section>
+    </div>
+    <br />
+    <p>
+        &nbsp;</p>
+    @{ 
+        StringBuilder signIn = new StringBuilder();
+
+        if (!Request.IsAuthenticated || Session["UserId"] == null)
+        {
+        <div class="signInLink">
+            <a class="signInLink" href="/Account/LogIn">SIGN IN...</a>
+        </div>
+        }
+        else
+        {
+        <div class="signInLink">
+            <a class="signInLink" href="/Account/LogOff">SIGN OUT...</a>
+        </div>
+        }
+        
+    }
+    <div class="copyRight">
+        &copy; 2004 -
+        @DateTime.Now.Year.ToString()
+        <a class="copyRight" href="/">Second II None Motorcycle Club</a>
+        @if (!HttpContext.Current.Request.RawUrl.Contains("VideoGallery"))
+        {  
+            @*<br />
+			
+            <audio id="secondIInoneAudio" loop="loop" autoplay="autoplay" preload="auto">
+			  <source src="http://www.secondIInoneMC.com/Music/OnThemHoggs.mp3" type="audio/mp3" />
+			  <source src="http://www.secondIInoneMC.com/Music/SecondIINoneComeGetSome.mp3" type="audio/mp3" />
+			  <source src="http://www.secondIInoneMC.com/Music/RimsAndPipes.mp3" type="audio/mp3" />
+			  <source src="http://www.secondIInoneMC.com/Music/WeRideThemHogs.mp3" type="audio/mp3" />
+			  <source src="http://www.secondIInoneMC.com/Music/EasyRider.mp3" type="audio/mp3" />
+			</audio> 
+			
+            <div id="secondIInoneAudioPlayer">
+                <button class="tiny" onclick="document.getElementById('secondIInoneAudio').play()">
+                    PLAY</button>
+                <button class="tiny" onclick="document.getElementById('secondIInoneAudio').pause()">
+                    PAUSE</button>
+            </div>*@
+        }
+    </div>
+    @RenderSection("scripts", required: false)
+    <script src="/Scripts/colorbox/jquery.colorbox-min.js"></script>
+    @Scripts.Render("~/Content/js/vendor/custom.modernizr.js")
+    @Scripts.Render("~/Content/js/foundation.min.js")
+    @Scripts.Render("~/Content/js/zepto.js")
+    <script>
+        $(document).foundation();
+    </script>
+</body>
+</html>

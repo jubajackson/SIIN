@@ -1,0 +1,3 @@
+cd "$(ProjectDir)"
+copy "$(OutDir)$(TargetFileName)" C:\DevCloud\Assemblies /Y
+copy "$(OutDir)*.pdb" C:\DevCloud\Assemblies /Y

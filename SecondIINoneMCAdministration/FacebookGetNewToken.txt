@@ -1,0 +1,9 @@
+FIRST HIT THIS URL
+https://www.facebook.com/dialog/oauth?client_id=475418522468577&redirect_uri=https://apps.facebook.com/secondiinonemc/&scope=user_events,user_photos,user_videos,user_about_me,user_website,offline_access
+
+
+TAKE THE CODE FROM THE RESPONSE AND THEN HIT THIS URL
+https://graph.facebook.com/oauth/access_token?client_id=475418522468577&redirect_uri=https://apps.facebook.com/secondiinonemc/&client_secret=50b5dafcd858c7b65f19591b780b5017&code=AQAwqGiaJgL5n7b1bVyAmMUTQBT7qtNkjNPzXU8gCDN5NgfDbNxDqB9HgUhwlG4C-FZckD-DaFp4Ze-8TqQ2wHkYE3mHJfSDccPu4zYDRwZZaAZB1IG_A-XK5I5FITNflHqf2mrxwEPQZk5dujOO_YJ4LagfA6NiH7Bh_OGfkRh5V2qQAPABm_N_qKwFVUES-iE#_=_-KkJw1rvc#_=_
+
+
+THE NEW ACCESS TOKEN IS RETURNED IN THE REPONSE.  CUT AND PASTE INTO YOUR APPLICATION.

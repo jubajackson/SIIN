@@ -1,0 +1,166 @@
+﻿@model SecondIINoneMC.Web.ViewModels.RegisterViewModel
+@Styles.Render("~/Scripts/jqueryTimePicker/css/anytime.css")
+@Scripts.Render("~/Scripts/jqueryTimePicker/anytime.js")
+<script language="javascript" type="text/javascript">
+    function registerUser() {
+        if (validateRegisterForm()) {
+            document.forms["frmRegister"].submit();
+        }
+    }
+
+    function validateRegisterForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if (CharterId.selectedIndex <= 0) {
+            addError("The Charter field is required.");
+            $("#CharterId").addClass("error");
+
+            valid = false;
+        }
+
+        if (OfficerPositionId.selectedIndex <= 0) {
+            addError("The Position field is required.");
+            $("#OfficerPositionId").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#UserName').val().length <= 0) {
+            addError("The UserName field is required.");
+            $("#UserName").addClass("error");
+
+            valid = false;
+        }
+
+        if (!isEmailValid($('#UserName').val())) {
+            addError("The username must be a valid email address.");
+            $("#UserName").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#RidingName').val().length <= 0) {
+            addError("The Riding Name field is required.");
+            $("#RidingName").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Password').val().length <= 0) {
+            addError("The Password field is required.");
+            $("#Password").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#ConfirmPassword').val().length <= 0) {
+            addError("The Confirm Password field is required.");
+            $("#ConfirmPassword").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Password').val() != $('#ConfirmPassword').val()) {
+            addError("The Password and Confirm Password fields do not match.");
+            $("#Password").addClass("error");
+            $("#ConfirmPassword").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Birthday').val().length <= 0) {
+            addError("The Birthday field is required.");
+            $("#Birthday").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+    function clearErrors() {
+        $('#CharterId').removeClass("error");
+        $('#RidingName').removeClass("error");
+        $('#UserName').removeClass("error");
+        $('#Password').removeClass("error");
+        $("#ConfirmPassword").removeClass("error");
+        $("#Birthday").removeClass("error");
+
+        hideErrors();
+        hideMessages();
+    }
+
+    function navigateToLoginPage() {
+        window.location = '@Url.Action("Login")';
+    }
+</script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmRegister" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="formBox">
+        <ul class="nolist formGroup">
+            <li class="title">Register<a href="#" class="helpLink" onclick="JavaScript:displayHelp('register');">(Help)</a></li>
+            <li>
+                <label>
+                    Charter
+                </label>
+                @Html.DropDownListFor(m => m.CharterId, (SelectList)ViewBag.Charters, "Select a Charter")
+            </li>
+            <li>
+                <label>
+                    Position
+                </label>
+                @Html.DropDownListFor(m => m.OfficerPositionId, (SelectList)ViewBag.Positions, "Select a Position")
+            </li>
+            <li>
+                <label>
+                    Username
+                </label>
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li>
+                <label>
+                    Riding Name
+                </label>
+                @Html.TextBoxFor(m => m.RidingName)
+            </li>
+            <li>
+                <label>
+                    Password
+                </label>
+                @Html.PasswordFor(m => m.Password)
+            </li>
+            <li>
+                <label>
+                    Password Confirm
+                </label>
+                @Html.PasswordFor(m => m.ConfirmPassword)
+            </li>
+            <li>
+                <label>
+                    Birthday
+                </label>
+                @Html.EditorFor(m => m.Birthday)
+            </li>
+            <script language="javascript" type="text/javascript">
+                $("#Birthday").AnyTime_picker();
+            </script>
+        </ul>
+        <ul class="nolist" style="text-align: center;">
+            <li class="buttons">
+                <button type="button" onclick="JavaScript:navigateToLoginPage();">
+                    Back to Log in
+                </button>
+                <button type="button" onclick="JavaScript:registerUser();">
+                    Register</button>
+            </li>
+        </ul>
+    </div>
+}

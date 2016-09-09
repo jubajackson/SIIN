@@ -1,0 +1,362 @@
+﻿@{
+    ViewBag.Title = "Second II None MC Photo Gallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ <script src="https://connect.facebook.net/en_US/all.js"></script>
+
+<div id="fb-root"></div>
+<script language="javascript">
+    //FB.login(function (response) {
+    //    if (response.authResponse) {
+    //        getUserInfo();
+    //    } else {
+    //        console.log('User cancelled login or did not fully authorize.');
+    //    }
+    //}, { scope: 'email,user_photos,user_videos' });
+
+
+    var facebookappid = '475418522468577';
+    //this is the site owners facebook id. note she must make all her galleries and pictures public
+    var facebookProfileId = document.URL.substr((document.URL.lastIndexOf("/") + 1));
+    _selectedCharterFacebookId = facebookProfileId;
+
+    var userid = facebookProfileId.toString().replace("#", "");
+
+    //load the facebook SDK
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: facebookappid, status: true, cookie: true,
+            cookie: true,
+            xfbml: true
+        });
+    };
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "https://connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+    FB.login(function (response) {
+        // Handle the response object, like in statusChangeCallback() in our demo
+        // code.
+    });
+
+    //get albums
+    //var albums;
+    //FB.api('/me/albums/', 'get', function (response) {
+    //    if (!response || response.error) {
+    //        albums = response.error;
+    //    } else {
+    //        albums = response;
+    //    }
+    //});
+
+    //FB.api('/me/events?fields=owner', function (data) {
+    //    console.log(data)
+    //})
+</script>
+
+
+@*<div id="fb-root">
+</div>
+<script type="text/javascript">
+    var _nextAlbumPage = null;
+    var _previousAlbumPage = null;
+    var _nextPage = null;
+    var _previousPage = null;
+    var _currentPhotos = null;
+    var _selectedCharterFacebookId = null;
+    var _selectedAlbumId = null;
+
+    $(document).ready(function () {
+        _authorizationToken = 'CAAGwZAAAmwOEBAD11Pr8dpiFipmvia2BxD2ZCb7pZBYZALRJsoGifYvJYq7SFfu9e46qPOZAn2Q7ZCloGKwIlTb8MM8AZCdM7tLv6hGZCyl5WzJsc7ZCAHMvZAG9BruYtY917ZBQ1xPpepwl4HduiK8kHZCOgCijfHnceTsZD&expires=5183938';
+
+        getFacebookPhotoAlbumsByFacebookId();
+    });
+
+    function getFacebookPhotoAlbumsByFacebookId() {
+        showWaitDialog('Retrieving Photo Albums...');
+
+        var facebookProfileId = document.URL.substr((document.URL.lastIndexOf("/") + 1));
+        _selectedCharterFacebookId = facebookProfileId;
+        var facebookURL = 'https://graph.facebook.com/' + facebookProfileId.toString().replace("#", "") + '/albums?limit=8&access_token=' + _authorizationToken;
+
+        $.ajax({
+            type: "POST",
+            url: facebookURL,
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'jsonp',
+            cache: false,
+            success: function (albums) {
+                if (albums.error == null && albums.data.length > 0) {
+                    if (albums.paging != null) {
+                        _nextAlbumPage = albums.paging.next;
+                        _previousAlbumPage = albums.paging.previous;
+                    }
+                    onGetFacebookPhotoAlbumsByFacebookIdComplete(albums.data);
+                }
+                else {
+                    addError("No photo albums were found for this charter.");
+                    showErrors();
+
+                    hideWaitDialog();
+                }
+            },
+            error: function (xhr, statusText, thrownError) {
+                addError("An error occoured trying to retrieve photo albums.");
+                showErrors();
+
+                hideWaitDialog();
+            }
+
+        });
+    }
+
+    function getFacebookPagedAlbums(pageLink) {
+        showWaitDialog('Retrieving Photo Albums...');
+
+        var facebookURL = pageLink;
+
+        $.ajax({
+            type: "POST",
+            url: facebookURL,
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'jsonp',
+            cache: false,
+            success: function (albums) {
+                if (albums.error == null && albums.data.length > 0) {
+                    if (albums.paging != null) {
+                        _nextAlbumPage = albums.paging.next;
+                        _previousAlbumPage = albums.paging.previous;
+                    }
+                    onGetFacebookPhotoAlbumsByFacebookIdComplete(albums.data);
+                }
+                else {
+                    addError("No photo albums were found for this charter.");
+                    showErrors();
+
+                    hideWaitDialog();
+                }
+            },
+            error: function (xhr, statusText, thrownError) {
+                addError("An error occoured trying to retrieve photo albums.");
+                showErrors();
+
+                hideWaitDialog();
+            }
+        });
+    }
+
+    function onGetFacebookPhotoAlbumsByFacebookIdComplete(albums) {
+        var photosString = '';
+
+        photosString = photosString + '<div class="headerLink"><a href="/PhotoGallery/">Back to Photo Gallery</a></div>';
+
+        if (_nextAlbumPage != undefined || _previousAlbumPage != undefined) {
+            photosString = photosString + '<div class="headerLink">';
+            if (_previousAlbumPage != undefined) {
+                photosString = photosString + '<a href="#" onclick="JavaScript:getFacebookPagedAlbums(_previousAlbumPage)">Previous Page...</a>';
+            }
+            if (_nextAlbumPage != undefined) {
+                if (_previousAlbumPage != undefined) {
+                    photosString = photosString + ' | ';
+                }
+                photosString = photosString + '<a href="#" onclick="JavaScript:getFacebookPagedAlbums(_nextAlbumPage)">Next Page...</a>';
+            }
+            photosString = photosString + '</div>';
+        }
+
+        for (var rowCount = 0; rowCount < albums.length; rowCount++) {
+
+            photosString = photosString + '<div class="row">';
+
+            for (var i = 0; i < 2; i++) {
+
+                if (i < albums.length && rowCount < albums.length) {
+
+                    var lastUpdateDate = albums[rowCount].updated_time;
+                    var description = albums[rowCount].description;
+                    var name = albums[rowCount].name;
+                    var id = albums[rowCount].id;
+                    var coverPhoto = albums[rowCount].cover_photo;
+                    var photoCount = albums[rowCount].count;
+
+                    photosString = photosString + '<div class="large-2 photoAlbumColumns">';
+                    if (name != 'Wall Photos' && name != 'Mobile Uploads') {
+                        photosString = photosString + '<img style="max-width: 75px; max-height: 75px; margin-left: auto; margin-right: auto;" alt="Profile Picture" src="https://graph.facebook.com/' + coverPhoto + '/picture?access_token=' + _authorizationToken + '"  /><br />';
+                    }
+                    else {
+                        photosString = photosString + '<img style="margin-left: auto; margin-right: auto;" alt="Profile Picture" src="/Content/img/SecondIINoneMC50By50px.jpg"  /><br />';
+                    }
+                    photosString = photosString + '</div>';
+
+
+                    photosString = photosString + '<div class="large-4 photoAlbumColumns" style="font-weight: bold; border-right: 2px solid #D9D9D9;">';
+
+                    photosString = photosString + '<a href="#" onclick="javascript:getFacebookPhotosByAlbumId(' + id + ')">' + name + '</a><br />';
+
+                    //                    if (description != undefined) {
+                    //                        photosString = photosString + '<div style="font-size: 12px;">';
+                    //                        photosString = photosString + description;
+                    //                        photosString = photosString + '</div>';
+                    //                    }
+
+                    photosString = photosString + '<div style="color: grey; font-weight:bold; margin: 3px; font-size:11px;">'
+                    if (photoCount > 1)
+                        photosString = photosString + photoCount + ' Photos...';
+                    else
+                        photosString = photosString + photoCount + ' Photo';
+                    photosString = photosString + '</div>';
+
+                    photosString = photosString + '<div style="color: #D9D9D9; font-size:11px;">'
+                    photosString = photosString + 'Last Update: ' + convertFacebookDate(lastUpdateDate);
+                    photosString = photosString + '</div>';
+
+                    photosString = photosString + '</div>';
+
+                    rowCount++;
+                }
+                else {
+                    photosString = photosString + '<div class="large-2 columns">';
+                    photosString = photosString + '</div>';
+                    photosString = photosString + '<div class="large-4 columns">';
+                    photosString = photosString + '</div>';
+                }
+            }
+
+            photosString = photosString + '</div>';
+
+            rowCount--;
+        }
+
+        if (_nextAlbumPage != undefined || _previousAlbumPage != undefined) {
+            photosString = photosString + '<div class="headerLink">';
+            if (_previousAlbumPage != undefined) {
+                photosString = photosString + '<a href="#" onclick="JavaScript:getFacebookPagedAlbums(_previousAlbumPage)">Previous Page...</a>';
+            }
+            if (_nextAlbumPage != undefined) {
+                if (_previousAlbumPage != undefined) {
+                    photosString = photosString + ' | ';
+                }
+                photosString = photosString + '<a href="#" onclick="JavaScript:getFacebookPagedAlbums(_nextAlbumPage)">Next Page...</a>';
+            }
+            photosString = photosString + '</div>';
+        }
+
+        photosString = photosString + '<div class="headerLink"><a href="/PhotoGallery/">Back to Photo Gallery</a></div>';
+
+        $('#container').show();
+        $('#photosString').html(photosString);
+
+        togglePhotosDivs(false);
+
+        hideWaitDialog();
+    }
+
+    function togglePhotosDivs(isShowPhotos) {
+        if (isShowPhotos) {
+            $('#photos').show();
+            $('#photosString').hide();
+        }
+        else {
+            $('#photos').hide();
+            $('#photosString').show();
+        }
+    }
+
+    function getFacebookPhotosByAlbumId(albumId) {
+        showWaitDialog('Retrieving Photos...');
+
+        _selectedAlbumId = albumId;
+
+        var facebookURL = 'https://graph.facebook.com/' + albumId + '/photos?limit=21&access_token=' + _authorizationToken;
+
+        $.ajax({
+            type: "POST",
+            url: facebookURL,
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'jsonp',
+            cache: false,
+            success: function (photos) {
+                if (photos.error == null && photos.data.length > 0) {
+                    if (photos.paging != null) {
+                        _nextPage = photos.paging.next;
+                        _previousPage = photos.paging.previous;
+                    }
+                    _currentPhotos = photos.data;
+                    onGetFacebookPhotosByAlbumIdComplete();
+                }
+                else {
+                    addError("No photos found!");
+                    showErrors();
+
+                    hideWaitDialog();
+                }
+            },
+            error: function (xhr, statusText, thrownError) {
+                addError("An error occoured trying to retrieve photos.");
+                showErrors();
+
+                hideWaitDialog();
+            }
+
+        });
+    }
+
+    function onGetFacebookPhotosByAlbumIdComplete() {
+        
+        var photosString = '';
+
+        photosString = photosString + '<div class="headerLink"><a href="/PhotoGallery/">Back to Photo Gallery</a></div>';
+        photosString = photosString + '<div class="headerLink"><a href="#" onclick="JavaScript:togglePhotosDivs(false);">Back to Photo Albums</a></div>';
+
+        for (var rowCount = 0; rowCount < _currentPhotos.length; rowCount++) {
+       
+            photosString = photosString + '<div class="row">';
+            
+            for (var i = 0; i < 6; i++) {
+//                getImageSize(_currentPhotos[rowCount].picture);
+//                getResizedImageHeightAndWidth(_existingPictureWidth, _existingPictureHeight, 130);
+
+                if (rowCount < _currentPhotos.length) {
+                    photosString = photosString + '<div class="large-2 photoAlbumColumns" style="border-right: 2px solid #D9D9D9;">';
+
+                    photosString = photosString + '<a style="margin-left: 10px;" class="group1" href="' + _currentPhotos[rowCount].images[0].source + '">';
+                    photosString = photosString + '<img style="max-width: 75px; max-height: 75px;cursor:hand;" src="' + _currentPhotos[rowCount].picture + '";" />';
+                    photosString = photosString + '</a>';
+
+                    photosString = photosString + '</div>';
+                    rowCount++;
+                }
+            }
+
+            
+            photosString = photosString + '</div>';
+
+            rowCount--;
+        }
+
+        photosString = photosString + '<div class="headerLink"><a href="#" onclick="JavaScript:togglePhotosDivs(false);">Back to Photo Albums</a></div>';
+        photosString = photosString + '<div class="headerLink"><a href="/PhotoGallery/">Back to Photo Gallery</a></div>';
+
+        $('#photos').html(photosString);
+
+        if (!isBrowser()) {
+            $("a.group1").colorbox({ rel: 'group1', maxWidth:'95%', maxHeight:'95%', reposition: true, top: 0, left: 0, transition: 'none', speed: '50', inline: true });
+        } else {
+            $("a.group1").colorbox({ rel: 'group1', maxWidth:'95%', maxHeight:'95%' });
+        }
+
+        togglePhotosDivs(true);
+
+        hideWaitDialog();
+    }
+</script>*@
+<div id="container" class="gridContainer" style="display: none;">
+    <div id="photos">
+    </div>
+    <div id="photosString">
+    </div>
+</div>

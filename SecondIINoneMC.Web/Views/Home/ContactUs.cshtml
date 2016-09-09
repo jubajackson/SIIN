@@ -1,0 +1,132 @@
+﻿@model SecondIINoneMC.Web.ViewModels.ContactUsViewModel
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script language="javascript" type="text/javascript">
+    function contactUs() {
+        if (validateContactUsForm()) {
+            document.forms["frmContactUs"].submit();
+        }
+    }
+
+    function validateContactUsForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if (CharterId.selectedIndex <= 0) {
+            addError("The Charter field is required.");
+            $("#CharterId").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Name').val().length <= 0) {
+            addError("The Name field is required.");
+            $("#Name").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Email').val().length <= 0) {
+            addError("The Email field is required.");
+            $("#Email").addClass("error");
+
+            valid = false;
+        }
+
+        if (!isEmailValid($('#Email').val())) {
+            addError("The email field must be a valid email address.");
+            $("#Email").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Subject').val().length <= 0) {
+            addError("The Subject field is required.");
+            $("#Subject").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Message').val().length <= 0) {
+            addError("The Message field is required.");
+            $("#Message").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+    function clearErrors() {
+        $('#CharterId').removeClass("error");
+        $('#Name').removeClass("error");
+        $('#Email').removeClass("error");
+        $('#Subject').removeClass("error");
+        $("#Message").removeClass("error");
+
+        hideErrors();
+        hideMessages();
+    }
+</script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmContactUs" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="formBox">
+        <ul class="nolist formGroup">
+            <li class="title">Contact Us</li>
+            <li>
+                <label>
+                    Charter
+                </label>
+                @Html.DropDownListFor(m => m.CharterId, (SelectList)ViewBag.Charters, "Select a Charter")
+            </li>
+            <li>
+                <label>
+                    Name
+                </label>
+                @Html.TextBoxFor(m => m.Name)
+            </li>
+            <li>
+                <label>
+                    Email
+                </label>
+                @Html.TextBoxFor(m => m.Email)
+            </li>
+            <li>
+                <label>
+                    Subject
+                </label>
+                @Html.TextBoxFor(m => m.Subject)
+            </li>
+            <li>
+                <label>
+                    Message
+                </label>
+                @Html.TextAreaFor(m => m.Message)
+            </li>
+            <li>
+                <label>
+                    Please enter the following code </label>
+                <img src="/Content/img/captchas/@Model.CaptchaImage" />
+            </li>
+            <li>
+                @Html.HiddenFor(model => model.CaptchaId)
+                @Html.HiddenFor(model => model.CaptchaImage)
+                @Html.EditorFor(model => model.CaptchaEntered)
+            </li>
+        </ul>
+        <ul class="nolist" style="text-align: center;">
+            <li class="buttons">
+                <button type="button" onclick="JavaScript:contactUs();">Send</button>
+            </li>
+        </ul>
+    </div>
+}

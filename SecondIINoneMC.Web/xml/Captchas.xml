@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<captchas>
+  <captcha>
+    <id>1</id>
+    <image>captcha1.jpg</image>
+    <text>second</text>
+  </captcha>
+  <captcha>
+    <id>2</id>
+    <image>captcha2.jpg</image>
+    <text>siin</text>
+  </captcha>
+  <captcha>
+    <id>3</id>
+    <image>captcha3.jpg</image>
+    <text>rider</text>
+  </captcha>
+  <captcha>
+    <id>4</id>
+    <image>captcha4.jpg</image>
+    <text>harley</text>
+  </captcha>
+  <captcha>
+    <id>5</id>
+    <image>captcha5.jpg</image>
+    <text>s2n</text>
+  </captcha>
+</captchas>

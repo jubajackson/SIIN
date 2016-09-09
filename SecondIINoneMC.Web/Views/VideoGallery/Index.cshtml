@@ -1,0 +1,134 @@
+﻿@using SecondIINoneMC.Helpers
+@using SecondIINoneMC
+@using SecondIINoneMC.Web.ViewModels
+@{
+    ViewBag.Title = "Second II None MC Video Gallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script language="javascript" type="text/javascript">
+    function showSelectedVideo(videoId, videoDivName) {
+        var videoString = ''
+
+        videoString = videoString + '<iframe width="560" height="315" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+        $('#videoPlayer').show();
+        $('#videoPlayer').html(videoString);
+    }
+</script>
+@if (Model.Count > 0)
+{
+    <div class="gridContainer">
+        <div>
+            &nbsp;</div>
+        <div class="row">
+            <div class="headerLink">
+                @{
+                    var _recordCount = 1;
+                    var _currentPageNumber = 1;
+                    var _categoryId = 1;
+
+                    var d = 0;
+                    foreach (VideoGalleryViewModel video in Model)
+                    {
+                        if (d == 0)
+                        {
+                            _recordCount = video.VideoCount;
+                            _currentPageNumber = video.CurrentPageNumber;
+                            _categoryId = video.CategoryId;
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        d++;
+                    } 
+                }
+            </div>
+            <div class="divTopNavigation">
+                @Html.ActionLink("Events", "Index", "VideoGallery", new { categoryId = "1" }, null) |
+                @Html.ActionLink("Rides", "Index", "VideoGallery", new { categoryId = "2" }, null) |
+                @Html.ActionLink("Races", "Index", "VideoGallery", new { categoryId = "3" }, null) |
+                @Html.ActionLink("Bikes", "Index", "VideoGallery", new { categoryId = "4" }, null) |
+                @Html.ActionLink("Miscellaneous ", "Index", "VideoGallery", new { categoryId = "5" }, null) |
+                @Html.ActionLink("Wise Guys MC", "Index", "VideoGallery", new { categoryId = "6" }, new { @style="color:#663300;" })
+            </div>
+            <div class="flex-video widescreen" id="videoPlayer" style="max-width: 700px;" >
+                <iframe width="560" height="315" src="http://www.youtube.com/embed/@Model[0].Id" frameborder="0" style="border: 2px solid #56A0D3;" allowfullscreen></iframe>
+            </div>
+        </div>
+        @for (var rowCount = 0; rowCount < Model.Count; rowCount++)
+        {
+            <div class="row">
+                @for (var i = 0; i < 3; i++)
+                {
+                    if (rowCount < (Model.Count))
+                    {
+              
+                    <div class="large-1 videoGalleryColumns">
+                        <a style="text-align: center;" href="#" onclick="javascript:showSelectedVideo('@Model[rowCount].Id');">
+                            <img src="@Model[rowCount].Thumbnail" />
+                        </a>
+                    </div>
+                    <div class="large-3 videoGalleryColumns" style="border-right: 2px solid #D9D9D9;">
+                        <div style="color: blue; font-weight: bold;">
+                            <a href="#" onclick="javascript:showSelectedVideo('@Model[rowCount].Id');">
+                                @Model[rowCount].Title
+                            </a>
+                        </div>
+                        <div style="color: black; font-weight: bold; font-size: x-small;">
+                            Duration: &nbsp;&nbsp; @Model[rowCount].Duration
+                        </div>
+                        <div style="color: grey; font-weight: bold; font-size: x-small;">
+                            Views: &nbsp;&nbsp; @Model[rowCount].ViewCount</div>
+                    </div>
+                        rowCount++;
+
+                    }
+                    else
+                    {
+                    <div class="large-1 videoGalleryColumns">
+                    </div>
+                    <div class="large-3 videoGalleryColumns">
+                    </div>
+                    }
+                }
+            </div>
+                rowCount--;
+        }
+        <div class="row">
+            <div class="headerLink">
+                @{
+                    var pageCount = (_recordCount / 12);
+
+                    if (_recordCount % 12 != 0)
+                    {
+                        pageCount++;
+                    }
+
+                    for (var j = 1; j < pageCount + 1; j++)
+                    {
+                        if (_currentPageNumber != j)
+                        {
+                                @Html.ActionLink(j.ToString(), "Index", new { pageNumber = j, categoryId = _categoryId }) 
+                        
+                            if (j < pageCount)
+                            {
+                                <text>|</text>
+                            }
+                        }
+                        else
+                        {
+                                <text> @j.ToString()</text>
+                        
+                            if (j < pageCount)
+                            {
+                                <text>|</text>
+                            }
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}

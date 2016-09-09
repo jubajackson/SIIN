@@ -1,0 +1,5 @@
+sn -k jituSecondIINone.snk
+
+sn -o jituSecondIINone.snk public.txt
+
+sn -p jituSecondIINone.snk private.snk

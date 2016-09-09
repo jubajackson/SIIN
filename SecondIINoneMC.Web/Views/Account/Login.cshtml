@@ -1,0 +1,85 @@
+﻿@model SecondIINoneMC.Web.ViewModels.LoginViewModel
+<script language="javascript" type="text/javascript">
+    function logIn() {
+        if (validateLogInForm()) {
+            document.forms["frmLogin"].submit();
+        }
+    }
+
+    function validateLogInForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if ($('#UserName').val().length <= 0) {
+            addError("The UserName field is required.");
+            $("#UserName").addClass("error");
+
+            valid = false;
+        }
+
+        if (!isEmailValid($('#UserName').val())) {
+            addError("The username must be a valid email address.");
+            $("#UserName").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#Password').val().length <= 0) {
+            addError("The Password field is required.");
+            $("#Password").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+
+    function clearErrors() {
+        $('#UserName').removeClass("error");
+        $('#Password').removeClass("error");
+
+        hideErrors();
+        hideMessages();
+    } 
+
+    function navigateToRegisterPage() {
+        window.location = '@Url.Action("Register")';
+    }
+
+    function navigateToForgotPasswordPage() {
+        window.location = '@Url.Action("ForgotPassword")';
+    }
+</script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmLogin", ReturnUrl = ViewBag.ReturnUrl }))
+{
+    @Html.AntiForgeryToken()
+    <div class="formBox">
+        <ul class="nolist formGroup">
+            <li class="title">Log In</li>
+            <li>
+                <label>Username</label>
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li>
+                <label>Password</label>
+                @Html.PasswordFor(m => m.Password)
+            </li>
+        </ul>
+        <ul class="nolist" style="text-align: center;">
+            <li class="buttons">
+                <button type="button" onclick="JavaScript:navigateToForgotPasswordPage();">
+                    Forgot Password</button>
+                <button type="button" onclick="JavaScript:navigateToRegisterPage();">
+                    Register</button>
+                <button type="button" onclick="JavaScript:logIn();">
+                    Log in</button>
+            </li>
+        </ul>
+    </div>
+}

@@ -1,0 +1,162 @@
+﻿@using SecondIINoneMC.Helpers
+@using SecondIINoneMC
+@using SecondIINoneMC.Web.ViewModels
+@{
+    ViewBag.Title = "Second II None MC Guestbook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function navigateToNewGuestbookPost() {
+        window.location = '@Url.Action("Create")';
+    }
+</script>
+<div class="gridContainer">
+    <div class="large-12 columns headerLink">
+        @{
+            var i = 0;
+            var recordCount = 1;
+            var currentPageNumber = 1;
+            foreach (GuestbookViewModel guestbook in Model)
+            {
+                if (i == 0)
+                {
+                    recordCount = guestbook.PostCount;
+                    currentPageNumber = guestbook.CurrentPageNumber;
+            @guestbook.PostHeaderMessage;
+                }
+                else
+                {
+                    break;
+                }
+
+                i++;
+            } 
+        }
+    </div>
+    @foreach (GuestbookViewModel guestbook in Model)
+    {
+        <div style="margin-top:15px;"></div>
+        <div class="row">
+            <div class="title">
+                @guestbook.CharterName
+            </div>
+        </div>
+        if (guestbook.CreatedDate != null && guestbook.CreatedDate != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Date:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.CreatedDate
+            </div>
+        </div>
+        }
+        if (guestbook.Name != string.Empty && guestbook.Name != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Name:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.Name
+            </div>
+        </div>
+        }
+        if (guestbook.Email != string.Empty && guestbook.Email != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Email:
+            </div>
+            <div class="large-10 columns">
+                <a href="mailto:' + @guestbook.Email + '">@guestbook.Email </a>
+            </div>
+        </div>
+        }
+        if (guestbook.Website != string.Empty && guestbook.Website != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Website:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.Website
+            </div>
+        </div>
+        }
+        if (guestbook.Location != string.Empty && guestbook.Location != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Location:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.Location
+            </div>
+        </div>
+        }
+        if (guestbook.Club != string.Empty && guestbook.Club != null)
+        {
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Club:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.Club
+            </div>
+        </div>
+        }
+        <div class="row">
+            <div class="large-2 columns gridLabel" style="border-right: 2px solid #D9D9D9;">
+                Number:
+            </div>
+            <div class="large-10 columns">
+                @guestbook.Number
+            </div>
+        </div>
+        if (guestbook.Message != string.Empty && guestbook.Message != null)
+        {
+        <div class="row">
+            <div class="large-12 columns">
+                @guestbook.Message
+            </div>
+        </div>
+        }
+    }
+    <div class="large-12 columns headerLink">
+        @{
+            var pageCount = (recordCount / 12);
+
+            if (recordCount % 12 != 0)
+            {
+                pageCount++;
+            }
+        }
+        @for (var j = 1; j < pageCount + 1; j++)
+        {
+            if (currentPageNumber != j)
+            {
+            @Html.ActionLink(j.ToString(), "Index", new { pageNumber = j }) 
+                        
+                if (j < pageCount)
+                {
+            <text>|</text>
+                }
+            }
+            else
+            {
+            @j 
+                        
+                if (j < pageCount)
+                {
+            <text>|</text>
+                }
+            }
+        }
+    </div>
+    <div class="large-12 columns">
+        <button type="button" class="small" onclick="JavaScript:navigateToNewGuestbookPost();">
+            New Guestbook Post</button>
+    </div>
+</div>

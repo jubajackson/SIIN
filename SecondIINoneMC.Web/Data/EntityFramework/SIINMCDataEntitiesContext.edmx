@@ -1,0 +1,780 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="secondIInoneModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="secondIInoneModelStoreContainer">
+          <EntitySet Name="Address" EntityType="secondIInoneModel.Store.Address" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Charter" EntityType="secondIInoneModel.Store.Charter" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Guestbook" EntityType="secondIInoneModel.Store.Guestbook" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OfficerPosition" EntityType="secondIInoneModel.Store.OfficerPosition" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Roles" EntityType="secondIInoneModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RoleUsers" EntityType="secondIInoneModel.Store.RoleUsers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfile" EntityType="secondIInoneModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="secondIInoneModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Address_Users" Association="secondIInoneModel.Store.FK_Address_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_Users1" Association="secondIInoneModel.Store.FK_Address_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_Users2" Association="secondIInoneModel.Store.FK_Address_Users2">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Charter_Address" Association="secondIInoneModel.Store.FK_Charter_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="Charter" EntitySet="Charter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RoleUsers_dbo_Roles_Role_RoleId" Association="secondIInoneModel.Store.FK_dbo_RoleUsers_dbo_Roles_Role_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RoleUsers" EntitySet="RoleUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RoleUsers_dbo_Users_User_UserId" Association="secondIInoneModel.Store.FK_dbo_RoleUsers_dbo_Users_User_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RoleUsers" EntitySet="RoleUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guestbook_Charter" Association="secondIInoneModel.Store.FK_Guestbook_Charter">
+            <End Role="Charter" EntitySet="Charter" />
+            <End Role="Guestbook" EntitySet="Guestbook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Charter" Association="secondIInoneModel.Store.FK_UserProfile_Charter">
+            <End Role="Charter" EntitySet="Charter" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_OfficerPosition" Association="secondIInoneModel.Store.FK_UserProfile_OfficerPosition">
+            <End Role="OfficerPosition" EntitySet="OfficerPosition" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users" Association="secondIInoneModel.Store.FK_UserProfile_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users1" Association="secondIInoneModel.Store.FK_UserProfile_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="25" />
+          <Property Name="Address1" Type="nvarchar" Nullable="false" MaxLength="40" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="40" />
+          <Property Name="Address3" Type="nvarchar" MaxLength="40" />
+          <Property Name="City" Type="nvarchar" Nullable="false" MaxLength="25" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="Province" Type="nvarchar" MaxLength="3" />
+          <Property Name="PostalCode" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="Country" Type="char" MaxLength="2" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Charter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="FacebookId" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="FacebookName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Guestbook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CharterId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Website" Type="nvarchar" MaxLength="255" />
+          <Property Name="Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="Club" Type="nvarchar" MaxLength="255" />
+          <Property Name="Message" Type="varchar" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OfficerPosition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RoleUsers">
+          <Key>
+            <PropertyRef Name="Role_RoleId" />
+            <PropertyRef Name="User_UserId" />
+          </Key>
+          <Property Name="Role_RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_UserId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CharterId" Type="int" />
+          <Property Name="RidingName" Type="nvarchar" MaxLength="50" />
+          <Property Name="OfficerPositionId" Type="int" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="255" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="LastActivityDate" Type="datetime" />
+          <Property Name="LastLockoutDate" Type="datetime" />
+          <Property Name="LastLoginDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar(max)" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar(max)" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Address_Users">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Store.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_Users1">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Store.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_Users2">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Store.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Charter_Address">
+          <End Role="Address" Type="secondIInoneModel.Store.Address" Multiplicity="0..1" />
+          <End Role="Charter" Type="secondIInoneModel.Store.Charter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Charter">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RoleUsers_dbo_Roles_Role_RoleId">
+          <End Role="Roles" Type="secondIInoneModel.Store.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RoleUsers" Type="secondIInoneModel.Store.RoleUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RoleUsers">
+              <PropertyRef Name="Role_RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RoleUsers_dbo_Users_User_UserId">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RoleUsers" Type="secondIInoneModel.Store.RoleUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RoleUsers">
+              <PropertyRef Name="User_UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guestbook_Charter">
+          <End Role="Charter" Type="secondIInoneModel.Store.Charter" Multiplicity="1" />
+          <End Role="Guestbook" Type="secondIInoneModel.Store.Guestbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guestbook">
+              <PropertyRef Name="CharterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Charter">
+          <End Role="Charter" Type="secondIInoneModel.Store.Charter" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="secondIInoneModel.Store.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CharterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_OfficerPosition">
+          <End Role="OfficerPosition" Type="secondIInoneModel.Store.OfficerPosition" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="secondIInoneModel.Store.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OfficerPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="OfficerPositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1" />
+          <End Role="UserProfile" Type="secondIInoneModel.Store.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users1">
+          <End Role="Users" Type="secondIInoneModel.Store.Users" Multiplicity="1" />
+          <End Role="UserProfile" Type="secondIInoneModel.Store.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="secondIInoneModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SIINMCDataEntitiesContext" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="secondIInoneModel.Address" />
+          <EntitySet Name="Charters" EntityType="secondIInoneModel.Charter" />
+          <EntitySet Name="Guestbooks" EntityType="secondIInoneModel.Guestbook" />
+          <EntitySet Name="OfficerPositions" EntityType="secondIInoneModel.OfficerPosition" />
+          <EntitySet Name="Roles" EntityType="secondIInoneModel.Role" />
+          <EntitySet Name="UserProfiles" EntityType="secondIInoneModel.UserProfile" />
+          <EntitySet Name="Users" EntityType="secondIInoneModel.User" />
+          <AssociationSet Name="FK_Address_Users" Association="secondIInoneModel.FK_Address_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_Users1" Association="secondIInoneModel.FK_Address_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_Users2" Association="secondIInoneModel.FK_Address_Users2">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Charter_Address" Association="secondIInoneModel.FK_Charter_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Charter" EntitySet="Charters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guestbook_Charter" Association="secondIInoneModel.FK_Guestbook_Charter">
+            <End Role="Charter" EntitySet="Charters" />
+            <End Role="Guestbook" EntitySet="Guestbooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Charter" Association="secondIInoneModel.FK_UserProfile_Charter">
+            <End Role="Charter" EntitySet="Charters" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_OfficerPosition" Association="secondIInoneModel.FK_UserProfile_OfficerPosition">
+            <End Role="OfficerPosition" EntitySet="OfficerPositions" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users" Association="secondIInoneModel.FK_UserProfile_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfile_Users1" Association="secondIInoneModel.FK_UserProfile_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="RoleUsers" Association="secondIInoneModel.RoleUsers">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" Unicode="true" FixedLength="false" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="Address2" Type="String" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="Address3" Type="String" MaxLength="40" Unicode="true" FixedLength="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="25" Unicode="true" FixedLength="false" />
+          <Property Name="State" Type="String" MaxLength="2" Unicode="true" FixedLength="false" />
+          <Property Name="Province" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Country" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="secondIInoneModel.FK_Address_Users" FromRole="Address" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="secondIInoneModel.FK_Address_Users1" FromRole="Address" ToRole="Users" />
+          <NavigationProperty Name="User2" Relationship="secondIInoneModel.FK_Address_Users2" FromRole="Address" ToRole="Users" />
+          <NavigationProperty Name="Charters" Relationship="secondIInoneModel.FK_Charter_Address" FromRole="Address" ToRole="Charter" />
+        </EntityType>
+        <EntityType Name="Charter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FacebookId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmailAddress" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="FacebookName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Address" Relationship="secondIInoneModel.FK_Charter_Address" FromRole="Charter" ToRole="Address" />
+          <NavigationProperty Name="Guestbooks" Relationship="secondIInoneModel.FK_Guestbook_Charter" FromRole="Charter" ToRole="Guestbook" />
+          <NavigationProperty Name="UserProfiles" Relationship="secondIInoneModel.FK_UserProfile_Charter" FromRole="Charter" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="Guestbook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CharterId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="MobilePhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Website" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Location" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Club" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="8000" Unicode="false" FixedLength="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Charter" Relationship="secondIInoneModel.FK_Guestbook_Charter" FromRole="Guestbook" ToRole="Charter" />
+        </EntityType>
+        <EntityType Name="OfficerPosition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="UserProfiles" Relationship="secondIInoneModel.FK_UserProfile_OfficerPosition" FromRole="OfficerPosition" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Guid" Nullable="false" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Users" Relationship="secondIInoneModel.RoleUsers" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="CharterId" Type="Int32" />
+          <Property Name="RidingName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="OfficerPositionId" Type="Int32" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="Picture" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Charter" Relationship="secondIInoneModel.FK_UserProfile_Charter" FromRole="UserProfile" ToRole="Charter" />
+          <NavigationProperty Name="OfficerPosition" Relationship="secondIInoneModel.FK_UserProfile_OfficerPosition" FromRole="UserProfile" ToRole="OfficerPosition" />
+          <NavigationProperty Name="User" Relationship="secondIInoneModel.FK_UserProfile_Users" FromRole="UserProfile" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="secondIInoneModel.FK_UserProfile_Users1" FromRole="UserProfile" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="LastActivityDate" Type="DateTime" Precision="3" />
+          <Property Name="LastLockoutDate" Type="DateTime" Precision="3" />
+          <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsLockedOut" Type="Boolean" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Addresses" Relationship="secondIInoneModel.FK_Address_Users" FromRole="Users" ToRole="Address" />
+          <NavigationProperty Name="Addresses1" Relationship="secondIInoneModel.FK_Address_Users1" FromRole="Users" ToRole="Address" />
+          <NavigationProperty Name="Addresses2" Relationship="secondIInoneModel.FK_Address_Users2" FromRole="Users" ToRole="Address" />
+          <NavigationProperty Name="UserProfiles" Relationship="secondIInoneModel.FK_UserProfile_Users" FromRole="Users" ToRole="UserProfile" />
+          <NavigationProperty Name="UserProfiles1" Relationship="secondIInoneModel.FK_UserProfile_Users1" FromRole="Users" ToRole="UserProfile" />
+          <NavigationProperty Name="Roles" Relationship="secondIInoneModel.RoleUsers" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Address_Users">
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_Users1">
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_Users2">
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="1" />
+          <End Role="Address" Type="secondIInoneModel.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Charter_Address">
+          <End Role="Address" Type="secondIInoneModel.Address" Multiplicity="0..1" />
+          <End Role="Charter" Type="secondIInoneModel.Charter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Charter">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guestbook_Charter">
+          <End Role="Charter" Type="secondIInoneModel.Charter" Multiplicity="1" />
+          <End Role="Guestbook" Type="secondIInoneModel.Guestbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guestbook">
+              <PropertyRef Name="CharterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Charter">
+          <End Role="Charter" Type="secondIInoneModel.Charter" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="secondIInoneModel.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CharterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_OfficerPosition">
+          <End Role="OfficerPosition" Type="secondIInoneModel.OfficerPosition" Multiplicity="0..1" />
+          <End Role="UserProfile" Type="secondIInoneModel.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OfficerPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="OfficerPositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users">
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="1" />
+          <End Role="UserProfile" Type="secondIInoneModel.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfile_Users1">
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="1" />
+          <End Role="UserProfile" Type="secondIInoneModel.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RoleUsers">
+          <End Role="Roles" Type="secondIInoneModel.Role" Multiplicity="*" />
+          <End Role="Users" Type="secondIInoneModel.User" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="secondIInoneModelStoreContainer" CdmEntityContainer="SIINMCDataEntitiesContext">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="secondIInoneModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address3" ColumnName="Address3" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Charters">
+            <EntityTypeMapping TypeName="secondIInoneModel.Charter">
+              <MappingFragment StoreEntitySet="Charter">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="FacebookId" ColumnName="FacebookId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="FacebookName" ColumnName="FacebookName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guestbooks">
+            <EntityTypeMapping TypeName="secondIInoneModel.Guestbook">
+              <MappingFragment StoreEntitySet="Guestbook">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CharterId" ColumnName="CharterId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Club" ColumnName="Club" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OfficerPositions">
+            <EntityTypeMapping TypeName="secondIInoneModel.OfficerPosition">
+              <MappingFragment StoreEntitySet="OfficerPosition">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="secondIInoneModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="secondIInoneModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CharterId" ColumnName="CharterId" />
+                <ScalarProperty Name="RidingName" ColumnName="RidingName" />
+                <ScalarProperty Name="OfficerPositionId" ColumnName="OfficerPositionId" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="secondIInoneModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RoleUsers" TypeName="secondIInoneModel.RoleUsers" StoreEntitySet="RoleUsers">
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="RoleId" ColumnName="Role_RoleId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserId" ColumnName="User_UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

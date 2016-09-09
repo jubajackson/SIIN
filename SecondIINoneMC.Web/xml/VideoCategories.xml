@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<videocategories>
+  <category>
+    <id>1</id>
+    <name>Events</name>
+  </category>
+  <category>
+    <id>2</id>
+    <name>Rides</name>
+  </category>
+  <category>
+    <id>3</id>
+    <name>Races</name>
+  </category>
+  <category>
+    <id>4</id>
+    <name>Bikes</name>
+  </category>
+  <category>
+    <id>5</id>
+    <name>Misc</name>
+  </category>
+  <category>
+    <id>6</id>
+    <name>Wise Guys</name>
+  </category>
+</videocategories>

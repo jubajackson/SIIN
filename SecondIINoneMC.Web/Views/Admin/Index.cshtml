@@ -1,0 +1,634 @@
+﻿@Styles.Render("~/Scripts/jqueryTimePicker/css/anytime.css")
+@Scripts.Render("~/Scripts/jqueryTimePicker/anytime.js")
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        getAllRoles();
+    });
+
+    var _selectedUser = null;
+    var _roles = null;
+
+    function getAllRoles() {
+        showWaitDialog('Retrieving All Users...');
+
+        clearErrors();
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllRoles", "Admin")',
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'json',
+            cache: false,
+            success: function (roles) {
+                if (!isNullOrUndefinedOrEmpty(roles)) {
+                    _roles = roles;
+                    hideWaitDialog();
+                }
+                else {
+                    addError("There are no user roles defined in the system.");
+                    showErrors();
+                    hideWaitDialog();
+                }
+            },
+            error: function (xhr, statusText, thrownError) {
+                addError("Unable to retrieve user roles.");
+                showErrors();
+                hideWaitDialog();
+            }
+        });
+    }
+
+    function searchUsers() {
+        resetUserForm();
+
+        $('#divUserAdministration').hide();
+        $('#divImageUpload').hide();
+        
+        showWaitDialog('Searching Users...');
+
+        clearErrors();
+
+        var parameters = { userSearchCriteria: $('#txtUserSearchCriteria').val() };
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("SearchUsers", "Admin")',
+            contentType: 'application/json; charset=utf-8;',
+            data: parameters,
+            dataType: 'json',
+            cache: false,
+            success: function (users) {
+                if (!isNullOrUndefinedOrEmpty(users)) {
+                    onSearchUsersComplete(users);
+                    hideWaitDialog();
+                }
+                else {
+                    addMessage("Your search criteria did not return any users.");
+                    showMessages();
+
+                    $('#divSelectUser').hide();
+
+                    hideWaitDialog();
+                }
+            },
+            error: function (xhr, statusText, thrownError) {
+                addError("An error occurred retrieving users.");
+                showErrors();
+
+                $('#divSelectUser').hide();
+
+                hideWaitDialog();
+            }
+        });
+    }
+
+    function onSearchUsersComplete(users) {
+        populateUsersDropdownlist(users);
+
+        $('#divSelectUser').show();
+    }
+
+    function populateUsersDropdownlist(users) {
+        $('#ddlUsers').empty();
+
+        var isSelected = false;
+
+        addDropDownOption(document.getElementById("ddlUsers"), "Select a User to Edit", "0", false, false);
+
+        for (var i = 0; i < users.length; i++) {
+            if (!isNullOrUndefinedOrEmpty(_selectedUser)) {
+                if (_selectedUser.User.UserId == users[i].UserId)
+                    isSelected = true;
+                else
+                    isSelected = false;
+            }
+            else {
+                isSelected = false;
+            }
+
+            addDropDownOption(document.getElementById("ddlUsers"), users[i].Username, users[i].UserId, false, isSelected);
+        }
+    }
+
+    function getUserByID(userId, isManageUserSave) {
+        showWaitDialog('Retrieving User...');
+
+        if (!isManageUserSave)
+            clearErrors();
+
+        if (userId != "0") {
+            var parameters = { userId: userId };
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetUserByID", "Admin")',
+                contentType: 'application/json; charset=utf-8;',
+                data: parameters,
+                dataType: 'json',
+                cache: false,
+                success: function (userViewModel) {
+                    if (!isNullOrUndefinedOrEmpty(userViewModel.User) || !isNullOrUndefinedOrEmpty(userViewModel.UserProfile)) {
+                        onGetUserByIDComplete(userViewModel, isManageUserSave);
+                        hideWaitDialog();
+                    }
+                    else {
+                        addError("Unable to retrieve user.");
+                        showErrors();
+                        hideWaitDialog();
+                    }
+                },
+                error: function (xhr, statusText, thrownError) {
+                    addError("Unable to retrieve user.");
+                    showErrors();
+                    hideWaitDialog();
+                }
+            });
+        }
+        else {
+            resetUserForm();
+
+            $('#divUserAdministration').hide();
+            $('#divImageUpload').hide();
+            
+            hideWaitDialog();
+        }
+    }
+
+    function onGetUserByIDComplete(userViewModel, isManageUserSave) {
+        _selectedUser = userViewModel;
+
+        $('#selectedUserId').val(userViewModel.User.Id);
+
+        populateRolesListbox();
+
+        $('#divUserAdministration').show();
+        $('#divImageUpload').show();
+
+        $("#imageUpload").removeAttr("disabled");
+        $("#btnCancel").removeAttr("disabled");
+        $("#btnUpload").removeAttr("disabled");
+
+        $('#liPassword').hide();
+
+        $('#txtRidingName').val(userViewModel.UserProfile.RidingName);
+        $('#txtFirstName').val(userViewModel.User.FirstName);
+        $('#txtLastName').val(userViewModel.User.LastName);
+        $("#txtUsername").val(userViewModel.User.Username);
+        $("#txtPassword").val(userViewModel.User.Password);
+        $("#txtEmail").val(userViewModel.User.Email);
+        $("#txtBirthday").val(JSONDateWithTime(userViewModel.UserProfile.Birthday));
+        $("#txtComment").val(userViewModel.User.Comment);
+
+        $("#CharterId").find('option[value="' + userViewModel.UserProfile.CharterId + '"]').attr("selected", true);
+        $("#OfficerPositionId").find('option[value="' + userViewModel.UserProfile.OfficerPositionId + '"]').attr("selected", true);
+
+        if (userViewModel.User.IsLockedOut) {
+            $('#chkLockedOut').attr('checked', 'checked');
+        }
+        else {
+            $('#chkLockedOut').removeAttr('checked');
+        }
+
+        if (userViewModel.User.IsApproved) {
+            $('#chkApproved').attr('checked', 'checked');
+        }
+        else {
+            $('#chkApproved').removeAttr('checked');
+        }
+
+        hideWaitDialog();
+    }
+
+    function clearErrors() {
+        $('#CharterId').removeClass("error");
+        $('#txtRidingName').removeClass("error");
+        $('#OfficerPositionId').removeClass("error");
+        $('#txtFirstName').removeClass("error");
+        $('#txtLastName').removeClass("error");
+        $("#txtUsername").removeClass("error");
+        $("#txtPassword").removeClass("error");
+        $("#txtEmail").removeClass("error");
+        $("#txtBirthday").removeClass("error");
+        $("#txtComment").removeClass("error");
+        $("#lstRoles").removeClass("error");
+        $("#chkApproved").removeClass("error");
+        $("#chkLockedOut").removeClass("error");
+        $("#imageUpload").removeClass("error");
+
+        hideErrors();
+        hideMessages();
+    }
+
+    function resetUserForm() {
+        _selectedUser = null;
+
+        $('#txtRidingName').val('');
+        $('#txtFirstName').val('');
+        $('#txtLastName').val('');
+        $("#txtUsername").val('');
+        $("#txtPassword").val('');
+        $("#txtEmail").val('');
+        $("#txtBirthday").val('');
+        $("#txtComment").val('');
+        $("#imageUpload").val('');
+
+        $('#chkLockedOut').removeAttr('checked');
+        $('#chkApproved').attr('checked', 'checked');
+
+        $('#divSelectUser').hide();
+
+        CharterId.selectedIndex = 0;
+        OfficerPositionId.selectedIndex = 0;
+        lstRoles.selectedIndex = 0;
+    }
+
+    function validateUserForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if (CharterId.selectedIndex == 0) {
+            addError("The Charter field is required.");
+            $("#CharterId").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#txtRidingName').val().length <= 0) {
+            addError("The Riding Name field is required.");
+            $("#txtRidingName").addClass("error");
+
+            valid = false;
+        }
+
+        if (OfficerPositionId.selectedIndex == 0) {
+            addError("The Position field is required.");
+            $("#OfficerPositionId").addClass("error");
+
+            valid = false;
+        }
+
+        //        if ($('#txtFirstName').val().length <= 0) {
+        //            addError("The First Name field is required.");
+        //            $("#txtFirstName").addClass("error");
+
+        //            valid = false;
+        //        }
+
+        //        if ($('#txtLastName').val().length <= 0) {
+        //            addError("The Last Name field is required.");
+        //            $("#txtLastName").addClass("error");
+
+        //            valid = false;
+        //        }
+
+        if ($('#txtUsername').val().length <= 0) {
+            addError("The Username field is required.");
+            $("#txtUsername").addClass("error");
+
+            valid = false;
+        }
+
+        if (!isEmailValid($('#txtUsername').val())) {
+            addError("The username must be a valid email address.");
+            $("#txtUsername").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#txtPassword').val().length <= 0) {
+            addError("The Password field is required.");
+            $("#txtPassword").addClass("error");
+
+            valid = false;
+        }
+
+        if ($('#txtEmail').val().length <= 0) {
+            addError("The Email field is required.");
+            $("#txtEmail").addClass("error");
+
+            valid = false;
+        }
+
+        if (!isEmailValid($('#txtEmail').val())) {
+            addError("The email address you entered is not valid..");
+            $("#txtEmail").addClass("error");
+
+            valid = false;
+        }
+
+        if (_selectedUser == null) {
+            if ($('#txtPassword').val().length <= 0) {
+                addError("The Password field is required.");
+                $("#txtPassword").addClass("error");
+
+                valid = false;
+            }
+        }
+
+        if (isNullOrUndefinedOrEmpty($('#lstRoles').val())) {
+            addError("The Roles field is required.");
+            $("#lstRoles").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+    function addNewUser() {
+        resetUserForm();
+
+        $("#txtUserSearchCriteria").val('');
+
+        _selectedUser = null;
+
+        $('#divUserAdministration').show();
+        $('#divImageUpload').show();
+        
+        $('#liPassword').show();
+
+        $("#imageUpload").attr("disabled", "disabled");
+        $("#btnCancel").attr("disabled", "disabled");
+        $("#btnUpload").attr("disabled", "disabled");
+
+        $('#divSelectUser').hide();
+
+        populateRolesListbox();
+    }
+
+    function populateRolesListbox() {
+        $('#lstRoles').empty();
+
+        var isSelected = false;
+        var obj = null;
+        for (var i = 0; i < _roles.length; i++) {
+            if (!isNullOrUndefinedOrEmpty(_selectedUser)) {
+                obj = _.find(_selectedUser.User.Roles, function (obj) { return obj.RoleName == _roles[i].RoleName })
+                if (!isNullOrUndefinedOrEmpty(obj)) {
+                    isSelected = true;
+                }
+                else {
+                    isSelected = false;
+                }
+            }
+
+            addDropDownOption(document.getElementById("lstRoles"), _roles[i].RoleName, _roles[i].RoleName, false, isSelected);
+        }
+    }
+
+    function cancelUserSave() {
+        resetUserForm();
+
+        _selectedUser = null;
+
+        $('#divUserAdministration').hide();
+        $('#divImageUpload').hide();
+        
+    }
+
+    function saveUser() {
+        showWaitDialog('Saving User...');
+
+        clearErrors();
+
+        if (validateUserForm()) {
+            var roles = '';
+
+            var userIdForUpdate = (isNullOrUndefinedOrEmpty(_selectedUser) ? 0 : _selectedUser.User.UserId);
+
+            var parameters = {
+                userId: userIdForUpdate,
+                charterId: $('#CharterId').val(),
+                ridingName: $('#txtRidingName').val(),
+                officerPositionId: $('#OfficerPositionId').val(),
+                firstName: $('#txtFirstName').val(),
+                lastName: $('#txtLastName').val(),
+                username: $("#txtUsername").val(),
+                password: $("#txtPassword").val(),
+                email: $("#txtEmail").val(),
+                birthday: $("#txtBirthday").val(),
+                isLockedOut: $("#chkLockedOut").is(':checked'),
+                isApproved: $("#chkApproved").is(':checked'),
+                comment: $("#txtComment").val(),
+                roles: $("#lstRoles").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveUser", "Admin")',
+                contentType: 'application/json; charset=utf-8;',
+                data: JSON.stringify(parameters),
+                dataType: 'json',
+                cache: false,
+                success: function (user) {
+                    if (!isNullOrUndefinedOrEmpty(user)) {
+                        _selectedUser = user;
+                        onSaveUserComplete();
+                    }
+                    else {
+                        addError("Unable to save user.");
+                        showErrors();
+                        hideWaitDialog();
+                    }
+                },
+                error: function (xhr, statusText, thrownError) {
+                    addError("Unable to save user.");
+                    showErrors();
+                    hideWaitDialog();
+                }
+            });
+        }
+    }
+
+    function onSaveUserComplete() {
+        addMessage("The user has been saved.");
+        showMessages();
+
+        getUserByID(_selectedUser.User.UserId, true);
+    }
+
+    function uploadImage() {
+        if (validateImageForm()) {
+            document.forms["frmImages"].submit();
+        }
+    }
+
+    function validateImageForm() {
+        var valid = true;
+
+        clearErrors();
+
+        if ($('#imageUpload').val().length <= 0) {
+            addError("The Image field is required.");
+            $("#imageUpload").addClass("error");
+
+            valid = false;
+        }
+
+        if (!valid) {
+            showErrors();
+        }
+
+        return valid;
+    }
+
+    function resetImageForm() {
+        $("#imageUpload").val('');
+    }
+
+    function cancelPhotosSave() {
+        resetImageForm();
+    }
+</script>
+<div class="formBox">
+    <ul class="nolist formGroup">
+        <li class="title">Search Users <a href="#" class="helpLink" onclick="JavaScript:displayHelp('users');">
+            (Help)</a></li>
+        <li>
+            <input type="text" id="txtUserSearchCriteria" />
+        </li>
+    </ul>
+    <ul>
+        <li class="buttons">
+        <button type="button" id="btnAddUser" onclick="JavaScript:addNewUser();">
+                Add User</button>
+            <button type="button" id="btnSearchUsers" onclick="JavaScript:searchUsers();">
+                Search Users</button>
+        </li>
+    </ul>
+</div>
+<div class="formBox" id="divSelectUser" style="display: none;">
+    <ul class="nolist formGroup">
+        <li>
+            <select id="ddlUsers" onchange="JavaScript:getUserByID(this.options[this.selectedIndex].value, false);">
+            </select>
+        </li>
+    </ul>
+</div>
+<p>&nbsp;</p>
+<div class="doubleFormContainer">
+    <div class="left">
+        <div class="formBox" id="divUserAdministration" style="display: none;">
+            <ul class="nolist formGroup">
+                <li class="title">User Administration</li>
+                <li>
+                    <label>
+                        Charter:
+                    </label>
+                    @Html.DropDownList("CharterId", (SelectList)ViewBag.Charters, "Select a Charter")
+                </li>
+                <li>
+                    <label>
+                        Riding Name:
+                    </label>
+                    <input type="text" id="txtRidingName" />
+                </li>
+                <li>
+                    <label>
+                        Position:
+                    </label>
+                    @Html.DropDownList("OfficerPositionId", (SelectList)ViewBag.Positions, "Select a Position")
+                </li>
+                <li>
+                    <label>
+                        First Name:</label>
+                    <input type="text" id="txtFirstName" />
+                </li>
+                <li>
+                    <label>
+                        Last Name:
+                    </label>
+                    <input type="text" id="txtLastName" />
+                </li>
+                <li>
+                    <label>
+                        Username:
+                    </label>
+                    <input type="text" id="txtUsername" />
+                </li>
+                <li id="liPassword">
+                    <label>
+                        Password:
+                    </label>
+                    <input type="text" id="txtPassword" />
+                </li>
+                <li>
+                    <label>
+                        Email:
+                    </label>
+                    <input type="text" id="txtEmail" />
+                </li>
+                <li>
+                    <label>
+                        Birthday:
+                    </label>
+                    <input type="text" id="txtBirthday" />
+                    <script language="javascript" type="text/javascript">
+                        $("#txtBirthday").AnyTime_picker();
+                    </script>
+                </li>
+                <li>
+                    <label>
+                        Locked Out?:
+                    </label>
+                    <input type="checkbox" id="chkLockedOut" />
+                </li>
+                <li>
+                    <label>
+                        Approved?:
+                    </label>
+                    <input type="checkbox" id="chkApproved" />
+                </li>
+                <li>
+                    <label>
+                        Comments:
+                    </label>
+                    <textarea id="txtComment"></textarea>
+                </li>
+                <li>
+                    <label>
+                        Roles:
+                    </label>
+                    <select id="lstRoles" multiple="multiple">
+                    </select>
+                </li>
+            </ul>
+            <ul class="nolist" style="text-align: center;">
+                <li class="buttons">
+                    <button type="button" onclick="JavaScript:cancelUserSave();">
+                        Cancel</button>
+                    <button type="button" onclick="JavaScript:saveUser();">
+                        Save</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="right">
+        <form action="/User/UploadImage" id="frmImages" method="post" enctype="multipart/form-data">
+            <div class="formBox" id="divImageUpload" style="display: none;">
+            <ul class="nolist formGroup">
+                <li class="title">Upload Profile Image</li>
+                <li>
+                    <label>
+                        Image:</label>
+                    <input type="file" id="imageUpload" name="imageUpload" disabled="disabled"/>
+                    <input type="hidden" id="selectedUserId" />
+                </li>
+            </ul>
+            <ul class="nolist" style="text-align: center;">
+                <li class="buttons">
+                    <button type="button" id="btnCancel" onclick="JavaScript:cancelPhotosSave();" disabled="disabled">
+                        Cancel</button>
+                    <button type="button" id="btnUpload" onclick="JavaScript:uploadImage();" disabled="disabled">
+                        Upload Image</button>
+                </li>
+            </ul>
+        </div>
+        </form>
+    </div>
+</div>
