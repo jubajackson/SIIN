@@ -32,7 +32,7 @@ namespace SecondIINoneMC.Web.Controllers
         {
             var charters = _charterService.GetAllActiveCharters(UnitOfWork).ToList();
 
-            charters = charters.Select(x => { x.Name = x.Name.Replace("Second II None MC ", string.Empty) + "-Photos"; return x; }).ToList();
+            charters = charters.Select(x => { x.Name = x.Name.Replace("Second II None MC ", string.Empty).ToUpper(); return x; }).ToList();
 
             return View(charters);
         }
