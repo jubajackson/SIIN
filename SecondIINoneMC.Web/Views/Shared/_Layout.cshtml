@@ -79,9 +79,6 @@
                         <li class="divider"></li>
                         <li class="active"><a href="/Account/Index">My Profile</a></li>
                         <li class="divider"></li>
-
-                        <li class="active has-dropdown"><a href="/Events">Events</a></li>
-                        <li class="divider"></li>
                     
                         @if (Roles.IsUserInRole("Administrator"))
                         { 
@@ -89,7 +86,7 @@
                             <li class="divider"></li>
                         }
                         
-                        <li class="active"><a href="/PhotoGallery">Photo Gallery</a></li>
+                        <li class="active"><a href="/PhotoGallery">Photos & Events</a></li>
                         <li class="divider"></li>
                         <li class="active"><a href="/VideoGallery">Video Gallery</a></li>
                         <li class="divider"></li>
@@ -103,13 +100,11 @@
             }
             else
             {
-                <section class="top-bar-section" style="max-width: 700px; margin: 0 auto;">
+                <section class="top-bar-section" style="max-width: 600px; margin: 0 auto;">
                     <ul>
                         <li class="active"><a href="/Home">Home</a></li>
                         <li class="divider"></li>
-                        <li class="active"><a href="/Events">Events</a></li>
-                        <li class="divider"></li>
-                        <li class="active"><a href="/PhotoGallery">Photo Gallery</a></li>
+                        <li class="active"><a href="/PhotoGallery">Photos & Events</a></li>
                         <li class="divider"></li>
                         <li class="active"><a href="/VideoGallery">Video Gallery</a></li>
                         <li class="divider"></li>

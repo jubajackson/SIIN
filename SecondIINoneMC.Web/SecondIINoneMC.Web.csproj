@@ -253,7 +253,6 @@
     <Compile Include="Context\DataContextInitializer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\GuestbookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotoGalleryController.cs" />
@@ -511,7 +510,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\img\.gitkeep" />
-    <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Guestbook\Create.cshtml" />
     <Content Include="Views\Guestbook\Index.cshtml" />
